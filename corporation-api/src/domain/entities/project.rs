@@ -1,13 +1,11 @@
-use crate::domain::value_objects::email::Email;
-use crate::domain::value_objects::user_id::UserId;
+use crate::domain::value_objects::project_id::ProjectId;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct User {
-    pub id: UserId,
-    pub email: Email,
+pub struct Project {
+    pub id: ProjectId,
     pub name: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
@@ -15,20 +13,19 @@ pub struct User {
 }
 
 #[derive(Debug, Error)]
-pub enum UserError {
+pub enum ProjectError {
     #[error("Invalid name: {0}")]
     InvalidName(String),
 }
 
-impl User {
-    pub fn new(id: UserId, email: Email, name: String) -> Result<Self, UserError> {
+impl Project {
+    pub fn new(id: ProjectId, name: String) -> Result<Self, ProjectError> {
         // ビジネスルールの検証
         Self::validate_name(&name)?;
 
         let now = Utc::now();
         let mut user = Self {
             id: id.clone(),
-            email: email.clone(),
             name,
             created_at: now,
             updated_at: now,
@@ -38,18 +35,20 @@ impl User {
         Ok(user)
     }
 
-    fn validate_name(name: &str) -> Result<(), UserError> {
+    fn validate_name(name: &str) -> Result<(), ProjectError> {
         if name.trim().is_empty() {
-            return Err(UserError::InvalidName("Name cannot be empty".to_string()));
+            return Err(ProjectError::InvalidName(
+                "Name cannot be empty".to_string(),
+            ));
         }
 
         if name.len() > 100 {
-            return Err(UserError::InvalidName("Name too long".to_string()));
+            return Err(ProjectError::InvalidName("Name too long".to_string()));
         }
 
         // 特殊文字の検証など
         if name.chars().any(|c| c.is_control()) {
-            return Err(UserError::InvalidName(
+            return Err(ProjectError::InvalidName(
                 "Name contains invalid characters".to_string(),
             ));
         }
@@ -58,11 +57,8 @@ impl User {
     }
 
     // 5. Getter メソッド（読み取り専用アクセス）
-    pub fn id(&self) -> &UserId {
+    pub fn id(&self) -> &ProjectId {
         &self.id
-    }
-    pub fn email(&self) -> &Email {
-        &self.email
     }
     pub fn name(&self) -> &str {
         &self.name

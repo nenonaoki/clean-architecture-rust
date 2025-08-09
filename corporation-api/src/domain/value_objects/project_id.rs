@@ -2,21 +2,21 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub struct UserId(u32);
+pub struct ProjectId(u32);
 
 #[derive(Debug, Error)]
-pub enum UserIdError {
-    #[error("Invalid user ID format: {0}")]
+pub enum ProjectIdError {
+    #[error("Invalid project ID format: {0}")]
     InvalidFormat(String),
 }
 
-impl Default for UserId {
+impl Default for ProjectId {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl UserId {
+impl ProjectId {
     /// 新しいUserIdを生成
     pub fn new() -> Self {
         Self(0) // デフォルト値として0を使用
@@ -28,10 +28,10 @@ impl UserId {
     }
 
     /// 文字列からUserIdを作成（バリデーション付き）
-    pub fn from_str(s: &str) -> Result<Self, UserIdError> {
+    pub fn from_str(s: &str) -> Result<Self, ProjectIdError> {
         let id = s
             .parse::<u32>()
-            .map_err(|_| UserIdError::InvalidFormat(s.to_string()))?;
+            .map_err(|_| ProjectIdError::InvalidFormat(s.to_string()))?;
         Ok(Self(id))
     }
 

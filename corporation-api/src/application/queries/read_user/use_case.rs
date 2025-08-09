@@ -1,17 +1,29 @@
-use super::dto::{Error, ErrorStatus, Input, Output};
+use super::dto::{ReadUserError, ReadUserInput, ReadUserOutput};
+use crate::domain::repositories::user::UserRepository;
+use crate::domain::value_objects::user_id::UserId;
+use std::sync::Arc;
 
-pub fn interactor(input: Input) -> Result<Output, Error> {
-    // TODO: 実際のリポジトリからユーザーを取得するロジックを実装
-    // 現在は入力データをそのまま返すダミー実装
+pub struct ReadUserInteractor {
+    user_repository: Arc<dyn UserRepository>,
+}
 
-    // エラーケースのテスト（実際の実装では適切な条件でエラーを返す）
-    if input.user_name.is_empty() {
-        return Err(Error {
-            status: ErrorStatus::Unknown,
-        });
+impl ReadUserInteractor {
+    pub fn new(user_repository: Arc<dyn UserRepository>) -> Self {
+        Self { user_repository }
     }
 
-    Ok(Output {
-        user_name: input.user_name,
-    })
+    pub async fn execute(&self, input: ReadUserInput) -> Result<ReadUserOutput, ReadUserError> {
+        let user_id = UserId::from_u32(input.user_id);
+        let user = self
+            .user_repository
+            .find_by_id(user_id)
+            .await?
+            .ok_or(ReadUserError::NotFound)?;
+
+        let output = ReadUserOutput {
+            user_id: user.id().as_u32(),
+        };
+
+        Ok(output)
+    }
 }

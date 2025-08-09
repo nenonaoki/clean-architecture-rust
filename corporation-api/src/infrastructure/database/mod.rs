@@ -1,7 +1,5 @@
 use log;
-use sea_orm::{
-    ConnectOptions, ConnectionTrait, Database, DatabaseBackend, DatabaseConnection, Statement,
-};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use std::env;
 use std::time::Duration;
 
@@ -30,14 +28,14 @@ pub async fn get_db() -> Result<DatabaseConnection, Box<dyn std::error::Error>> 
         .set_schema_search_path("project"); // Setting default PostgreSQL schema
     let db = Database::connect(opt).await?;
 
-    let test = db
-        .query_all(Statement::from_string(
-            DatabaseBackend::Postgres,
-            "SELECT * FROM project.projects LIMIT 10".to_string(),
-        ))
-        .await;
+    // let test = db
+    //     .query_all(Statement::from_string(
+    //         DatabaseBackend::Postgres,
+    //         "SELECT * FROM project.projects LIMIT 10".to_string(),
+    //     ))
+    //     .await;
 
-    println!("test: {:?}", test.unwrap());
+    // println!("test: {:?}", test.unwrap());
 
     Ok(db)
 }

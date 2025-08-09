@@ -1,17 +1,30 @@
-pub struct Input {
-    pub user_name: String,
-}
+use crate::domain::repositories::user::FindByIdError;
+use thiserror::Error;
 
-pub struct Output {
-    pub user_name: String,
+#[derive(Debug)]
+pub struct ReadUserInput {
+    pub user_id: u32,
 }
 
 #[derive(Debug)]
-pub enum ErrorStatus {
+pub struct ReadUserOutput {
+    pub user_id: u32,
+}
+
+#[derive(Error, Debug)]
+pub enum ReadUserError {
+    #[error("user not found")]
+    NotFound,
+
+    #[error("unknown error")]
     Unknown,
 }
 
-#[derive(Debug)]
-pub struct Error {
-    pub status: ErrorStatus,
+impl From<FindByIdError> for ReadUserError {
+    fn from(error: FindByIdError) -> Self {
+        match error {
+            FindByIdError::NotFound => ReadUserError::NotFound,
+            FindByIdError::Unknown => ReadUserError::Unknown,
+        }
+    }
 }

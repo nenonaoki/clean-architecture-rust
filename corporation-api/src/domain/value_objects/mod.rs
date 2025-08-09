@@ -4,4 +4,5 @@
 /// - 自己バリデーション: 無効な状態を作れない
 /// - 表現力: ドメインの概念を明確に表現
 pub mod email;
+pub mod project_id;
 pub mod user_id;
