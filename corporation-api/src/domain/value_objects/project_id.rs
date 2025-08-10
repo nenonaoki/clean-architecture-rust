@@ -1,10 +1,9 @@
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct ProjectId(u32);
 
-#[derive(Debug, Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum ProjectIdError {
     #[error("Invalid project ID format: {0}")]
     InvalidFormat(String),

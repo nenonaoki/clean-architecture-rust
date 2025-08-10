@@ -2,7 +2,6 @@ use crate::domain::value_objects::email::Email;
 use crate::domain::value_objects::user_id::UserId;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct User {
@@ -14,7 +13,7 @@ pub struct User {
     pub version: u64, // 楽観的ロック用
 }
 
-#[derive(Debug, Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum UserError {
     #[error("Invalid name: {0}")]
     InvalidName(String),

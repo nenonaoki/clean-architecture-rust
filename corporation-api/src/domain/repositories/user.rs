@@ -11,14 +11,6 @@ pub enum FindByIdError {
     Unknown,
 }
 
-// #[derive(Debug, thiserror::Error)]
-// pub enum SaveError {
-//     #[error("Database error: {0}")]
-//     Database(String),
-//     #[error("Validation error: {0}")]
-//     Validation(String),
-// }
-
 #[async_trait]
 pub trait UserRepository: Send + Sync {
     async fn find_by_id(&self, id: UserId) -> Result<Option<User>, FindByIdError>;

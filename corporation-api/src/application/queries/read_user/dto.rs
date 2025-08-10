@@ -1,5 +1,4 @@
 use crate::domain::repositories::user::FindByIdError;
-use thiserror::Error;
 
 #[derive(Debug)]
 pub struct ReadUserInput {
@@ -11,7 +10,7 @@ pub struct ReadUserOutput {
     pub user_id: u32,
 }
 
-#[derive(Error, Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum ReadUserError {
     #[error("user not found")]
     NotFound,

@@ -1,7 +1,6 @@
 use crate::domain::value_objects::project_id::ProjectId;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Project {
@@ -12,7 +11,7 @@ pub struct Project {
     pub version: u64, // 楽観的ロック用
 }
 
-#[derive(Debug, Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum ProjectError {
     #[error("Invalid name: {0}")]
     InvalidName(String),

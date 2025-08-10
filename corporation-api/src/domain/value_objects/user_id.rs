@@ -1,10 +1,9 @@
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct UserId(u32);
 
-#[derive(Debug, Error)]
+#[derive(Debug, thiserror::Error)]
 pub enum UserIdError {
     #[error("Invalid user ID format: {0}")]
     InvalidFormat(String),
