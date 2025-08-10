@@ -18,6 +18,7 @@ async fn main() -> std::io::Result<()> {
         .with_test_writer()
         .init();
 
+    // Configure App Data (DI)
     let app_data_config = infrastructure::configure_app_data().await;
     let app_data = web::Data::new(app_data_config);
 

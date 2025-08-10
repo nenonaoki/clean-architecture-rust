@@ -1,7 +1,9 @@
 use actix_web::{HttpResponse, Responder, http::header::ContentType, web};
 use serde::Serialize;
 
-use crate::application::queries::read_user;
+use crate::application::queries::read_user::{
+    dto::ReadUserError, dto::ReadUserInput, dto::ReadUserOutput, use_case::ReadUserInteractor,
+};
 use crate::infrastructure::AppData;
 
 #[derive(Serialize, Debug)]
@@ -16,25 +18,29 @@ struct ErrorResponse {
 }
 
 pub async fn get(path: web::Path<u32>, app_data: web::Data<AppData>) -> impl Responder {
+    // Parse Request
     let user_id: u32 = path.into_inner();
 
-    let input = read_user::dto::ReadUserInput { user_id: user_id };
-    let interactor = read_user::use_case::ReadUserInteractor::new(app_data.user_repository.clone());
+    // Execute UseCase
+    let input = ReadUserInput { user_id: user_id };
+    let interactor = ReadUserInteractor::new(app_data.user_repository.clone());
     let result = interactor.execute(input).await;
 
+    // Handle Response
     if result.is_ok() {
+        let output: ReadUserOutput = result.unwrap();
         let response = Response {
             id: user_id,
-            name: result.unwrap().user_id.to_string(),
+            name: output.user_id.to_string(),
         };
         HttpResponse::Ok()
             .content_type(ContentType::json())
             .json(web::Json(response))
     } else {
-        let error = result.err().unwrap();
+        let error: ReadUserError = result.err().unwrap();
 
         match error {
-            read_user::dto::ReadUserError::NotFound => {
+            ReadUserError::NotFound => {
                 let error_response = ErrorResponse {
                     error: "User not found".to_string(),
                 };
@@ -42,7 +48,7 @@ pub async fn get(path: web::Path<u32>, app_data: web::Data<AppData>) -> impl Res
                     .content_type(ContentType::json())
                     .json(web::Json(error_response))
             }
-            read_user::dto::ReadUserError::Unknown => {
+            ReadUserError::Unknown => {
                 let error_response = ErrorResponse {
                     error: "Unknown error occurred".to_string(),
                 };

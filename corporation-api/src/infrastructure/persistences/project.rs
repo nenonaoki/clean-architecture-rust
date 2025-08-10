@@ -2,7 +2,7 @@ use crate::domain::entities::project::Project;
 use crate::domain::repositories::project::{FindByIdError, ProjectRepository};
 use crate::domain::value_objects::project_id::ProjectId;
 use async_trait::async_trait;
-use sea_orm::{ConnectionTrait, DatabaseBackend, DatabaseConnection, Statement, Value};
+use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
