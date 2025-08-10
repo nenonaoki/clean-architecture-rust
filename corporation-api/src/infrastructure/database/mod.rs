@@ -3,7 +3,7 @@ use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use std::env;
 use std::time::Duration;
 
-pub async fn get_db() -> Result<DatabaseConnection, Box<dyn std::error::Error>> {
+pub async fn connect() -> Result<DatabaseConnection, Box<dyn std::error::Error>> {
     // データベース接続設定
     let protocol = env::var("DB_PROTOCOL").expect("DB_PROTOCOL must be set");
     let username = env::var("DB_USERNAME").expect("DB_USERNAME must be set");
@@ -27,15 +27,6 @@ pub async fn get_db() -> Result<DatabaseConnection, Box<dyn std::error::Error>> 
         .sqlx_logging_level(log::LevelFilter::Info)
         .set_schema_search_path("project"); // Setting default PostgreSQL schema
     let db = Database::connect(opt).await?;
-
-    // let test = db
-    //     .query_all(Statement::from_string(
-    //         DatabaseBackend::Postgres,
-    //         "SELECT * FROM project.projects LIMIT 10".to_string(),
-    //     ))
-    //     .await;
-
-    // println!("test: {:?}", test.unwrap());
 
     Ok(db)
 }

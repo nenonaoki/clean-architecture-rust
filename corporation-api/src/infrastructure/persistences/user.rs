@@ -52,6 +52,15 @@ impl UserRepository for UserRepositoryImpl {
     async fn find_by_id(&self, id: UserId) -> Result<Option<User>, FindByIdError> {
         let user_id = id.as_u32();
 
+        // let test = db
+        //     .query_all(Statement::from_string(
+        //         DatabaseBackend::Postgres,
+        //         "SELECT * FROM project.projects LIMIT 10".to_string(),
+        //     ))
+        //     .await;
+
+        // println!("test: {:?}", test.unwrap());
+
         // let result = self
         //     .db
         //     .query_all(Statement::from_sql_and_values(
