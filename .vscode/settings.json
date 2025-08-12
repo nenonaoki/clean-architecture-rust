@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "actix",
+        "chrono",
+        "clippy",
+        "dotenv",
+        "Interactor",
+        "persistences",
+        "serde",
+        "sqlx",
+        "thiserror",
+        "watchexec"
+    ]
+}
