@@ -14,8 +14,7 @@ pub async fn connect() -> Result<DatabaseConnection, Box<dyn std::error::Error>>
     let schema = env::var("DB_SCHEME").expect("DB_SCHEME must be set");
 
     let mut opt = ConnectOptions::new(format!(
-        "{}://{}:{}@{}:{}/{}?currentSchema={}",
-        protocol, username, password, host, port, database, schema
+        "{protocol}://{username}:{password}@{host}:{port}/{database}?currentSchema={schema}"
     ));
     opt.max_connections(100)
         .min_connections(5)

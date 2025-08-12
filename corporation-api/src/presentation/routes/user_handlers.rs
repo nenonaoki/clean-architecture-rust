@@ -23,7 +23,7 @@ pub async fn get(path: web::Path<u32>, app_data: web::Data<AppData>) -> impl Res
     let user_id: u32 = path.into_inner();
 
     // Execute UseCase
-    let input = ReadUserInput { user_id: user_id };
+    let input = ReadUserInput { user_id };
     let user_repository = app_data
         .container
         .resolve::<UserRepositoryImpl>("UserRepository")

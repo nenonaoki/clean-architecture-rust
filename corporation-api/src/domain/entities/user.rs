@@ -25,9 +25,9 @@ impl User {
         Self::validate_name(&name)?;
 
         let now = Utc::now();
-        let mut user = Self {
-            id: id.clone(),
-            email: email.clone(),
+        let user = Self {
+            id,
+            email,
             name,
             created_at: now,
             updated_at: now,

@@ -23,8 +23,8 @@ impl Project {
         Self::validate_name(&name)?;
 
         let now = Utc::now();
-        let mut user = Self {
-            id: id.clone(),
+        let user = Self {
+            id,
             name,
             created_at: now,
             updated_at: now,

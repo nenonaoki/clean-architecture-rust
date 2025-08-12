@@ -1,7 +1,5 @@
 use actix_web::{App, HttpResponse, HttpServer, middleware, web};
 use dotenv::dotenv;
-use tracing;
-use tracing_subscriber;
 
 mod application;
 mod domain;
@@ -31,7 +29,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::NormalizePath::new(
                 middleware::TrailingSlash::Trim,
             ))
-            .default_service(web::to(|| HttpResponse::NotFound()))
+            .default_service(web::to(HttpResponse::NotFound))
             .configure(presentation::routes::configure_routes)
     })
     .bind(("127.0.0.1", 8080))?

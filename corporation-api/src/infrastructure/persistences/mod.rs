@@ -41,7 +41,7 @@ impl Container {
         T: 'static + Send + Sync,
     {
         let dependencies = self.dependencies.read().unwrap();
-        let dependency = dependencies.get(name).ok_or_else(|| DIError::NotFound)?;
+        let dependency = dependencies.get(name).ok_or(DIError::NotFound)?;
 
         dependency
             .clone()

@@ -3,7 +3,7 @@ use crate::domain::repositories::user::{FindByIdError, UserRepository};
 use crate::domain::value_objects::email::Email;
 use crate::domain::value_objects::user_id::UserId;
 use async_trait::async_trait;
-use sea_orm::{ConnectionTrait, DatabaseBackend, DatabaseConnection, Statement, Value};
+use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 

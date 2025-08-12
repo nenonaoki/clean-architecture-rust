@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::fmt;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Email {
@@ -9,6 +10,12 @@ pub struct Email {
 pub enum EmailError {
     #[error("Invalid email format: {0}")]
     InvalidFormat(String),
+}
+
+impl fmt::Display for Email {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.value)
+    }
 }
 
 impl Email {
@@ -58,9 +65,5 @@ impl Email {
 
     pub fn as_str(&self) -> &str {
         &self.value
-    }
-
-    pub fn to_string(self) -> String {
-        self.value
     }
 }
