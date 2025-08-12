@@ -5,6 +5,7 @@ use crate::application::queries::read_user::{
     dto::ReadUserError, dto::ReadUserInput, dto::ReadUserOutput, use_case::ReadUserInteractor,
 };
 use crate::infrastructure::AppData;
+use crate::infrastructure::persistences::user::UserRepositoryImpl;
 
 #[derive(Serialize, Debug)]
 struct Response {
@@ -23,7 +24,11 @@ pub async fn get(path: web::Path<u32>, app_data: web::Data<AppData>) -> impl Res
 
     // Execute UseCase
     let input = ReadUserInput { user_id: user_id };
-    let interactor = ReadUserInteractor::new(app_data.user_repository.clone());
+    let user_repository = app_data
+        .container
+        .resolve::<UserRepositoryImpl>("UserRepository")
+        .unwrap();
+    let interactor = ReadUserInteractor::new(user_repository);
     let result = interactor.execute(input).await;
 
     // Handle Response
